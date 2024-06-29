@@ -68,7 +68,7 @@
     border: 1px solid #7a828e;
     border-radius: 4px;
     text-align: center;
-    width: 80px;
+    width: 40px;
     margin: 0 5px;
 }
 
@@ -84,6 +84,10 @@
 
 .github-select:hover {
     background-color: #272b33;
+}
+
+.color-mode-select {
+    width: 80px;
 }
 
 .github-button {

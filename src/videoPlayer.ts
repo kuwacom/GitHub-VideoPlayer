@@ -1,5 +1,5 @@
 import { MonthList, WeekList } from "./utils/tableTitles";
-import { ContributionDataLevels, init, normalizeToRange } from "./utils/utils";
+import { ColorMode, ContributionDataLevels, ContributionLikeGrayScale, init, normalizeToRange } from "./utils/utils";
 
 let isPause = true;
 const video = document.createElement('video');
@@ -9,14 +9,6 @@ init(() => {
     const pauseButton = document.getElementById('pauseButton')
 
     playButton?.addEventListener('click', () => {
-        // const videoFileInput = <HTMLInputElement>document.getElementById('videoFileInput');
-        // if (!videoFileInput || !videoFileInput.files || !videoFileInput.files.length) {
-        //     alert('動画ファイルを選択してください');
-        //     return;
-        // }
-
-        // const videoFile = videoFileInput.files[0];
-        // startVideoProcessing(videoFile);
         const videoSelect = <HTMLSelectElement>document.getElementById('videoSelect');
         if (!videoSelect || !videoSelect.value) {
             alert('動画ファイルを選択してください');
@@ -35,11 +27,9 @@ init(() => {
 
 async function startVideoProcessing(videoFilePath: string) {
     const canvas = document.createElement('canvas');
-    // const canvas = <HTMLCanvasElement>document.getElementById('videoCanvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // video.src = URL.createObjectURL(videoFile);
     video.src = videoFilePath
 
     video.onloadedmetadata = async function () {
@@ -73,21 +63,44 @@ async function startVideoProcessing(videoFilePath: string) {
             let frameDataLine = [];
             // [r,g,b, r,g,b,] みたいな構造っぽい
             for (let i = 0; i < pixels.length; i += 4) {
-                const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
-                // pixels[i] = avg; // Red
-                // pixels[i + 1] = avg; // Green
-                // pixels[i + 2] = avg; // Blue
-
-                const dataLevelGray = Math.floor((gray / 256 * ContributionDataLevels.length))
-                frameDataLine.push(ContributionDataLevels[dataLevelGray])
-                if ((i / 4 + 1) % frameWidth === 0) {
-                    frameData.push(frameDataLine)
-                    frameDataLine = []
+                const colorModeSelect = <HTMLSelectElement>document.getElementById('colorModeSelect');
+                if (colorModeSelect.value == 'contributionDataLevels') {
+                    const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+                    // pixels[i] = avg; // Red
+                    // pixels[i + 1] = avg; // Green
+                    // pixels[i + 2] = avg; // Blue
+    
+                    const dataLevelGray = Math.floor((gray / 256 * ContributionDataLevels.length))
+                    frameDataLine.push(dataLevelGray)
+                    if ((i / 4 + 1) % frameWidth === 0) {
+                        frameData.push(frameDataLine)
+                        frameDataLine = []
+                    }
+                } else if (colorModeSelect.value == 'contributionLikeGrayScale') {
+                    const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+    
+                    const dataLevelLikeGray = Math.floor((gray / 256 * ContributionLikeGrayScale.length))
+                    frameDataLine.push(dataLevelLikeGray)
+                    if ((i / 4 + 1) % frameWidth === 0) {
+                        frameData.push(frameDataLine)
+                        frameDataLine = []
+                    }
+                } else if (colorModeSelect.value == 'color') {
+                    frameDataLine.push([
+                        pixels[i],
+                        pixels[i + 1],
+                        pixels[i + 2]
+                    ])
+                    if ((i / 4 + 1) % frameWidth === 0) {
+                        frameData.push(frameDataLine)
+                        frameDataLine = []
+                    }
                 }
             }
 
             // console.log(frameData)
 
+            // @ts-ignore
             overwriteContributionTable(frameData)
 
             // ビデオが終了したら処理を停止
@@ -95,7 +108,6 @@ async function startVideoProcessing(videoFilePath: string) {
                 clearInterval(intervalId);
             }
         }, 1);
-        // }, 1000 / video.playbackRate); // フレーム間の間隔を計算
     };
 
     video.onerror = function () {
@@ -108,7 +120,7 @@ async function startVideoProcessing(videoFilePath: string) {
 }
 
 
-function overwriteContributionTable(frameData: number[][]) {
+function overwriteContributionTable(frameData: number[][] | number[][][]) {
     const contributionTable = document.getElementsByClassName('ContributionCalendar-grid')[0];
     // contributionTable.classList.add('custom-table');
     contributionTable.innerHTML = `<caption class="sr-only">Contribution Graph</caption>`;
@@ -166,10 +178,21 @@ function overwriteContributionTable(frameData: number[][]) {
             `;
         }
         
-        line.forEach((pixel, index) => {
-            tbodyHTML += `
-                <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
-            `;
+        line.forEach((pixel: any, index) => {
+            const colorModeSelect = <HTMLSelectElement>document.getElementById('colorModeSelect');
+            if (colorModeSelect.value == 'contributionDataLevels') {
+                tbodyHTML += `
+                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                `;
+            } else if (colorModeSelect.value == 'contributionLikeGrayScale') {
+                tbodyHTML += `
+                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px; background-color: ${ContributionLikeGrayScale[pixel]};" id="contribution-day-component-0-0" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                `;
+            } else if (colorModeSelect.value == 'color') {
+                tbodyHTML += `
+                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px; background-color: rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]});" id="contribution-day-component-0-0" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                `;
+            }
         });
         tbodyHTML += '</tr>';
     });

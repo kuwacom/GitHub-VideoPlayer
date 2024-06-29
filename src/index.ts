@@ -1,5 +1,5 @@
 import './assets/main.css';
-import { init, projectVersion } from './utils/utils';
+import { ColorMode, init, projectVersion } from './utils/utils';
 
 import videoIndex from '../public/videos/index.json';
 
@@ -66,6 +66,17 @@ init(()=>{ // 再生ボタンの追加
     heightInput.classList.add('github-input-number');
     heightInput.step = '1'; // スピンボタンを表示
     heightInput.value = '21';
+
+    const colorModeSelect = document.createElement('select');
+    colorModeSelect.id = 'colorModeSelect';
+    colorModeSelect.classList.add('github-select');
+    colorModeSelect.classList.add('color-mode-select')
+    ColorMode.forEach(mode => {
+        const option = document.createElement('option');
+        option.value = mode.value;
+        option.textContent = mode.name;
+        colorModeSelect.appendChild(option);
+    });
     
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('github-button-container');
@@ -85,7 +96,8 @@ init(()=>{ // 再生ボタンの追加
     
     buttonContainer.appendChild(widthInput);
     buttonContainer.appendChild(heightInput);
-    
+    buttonContainer.appendChild(colorModeSelect);
+
     buttonContainer.appendChild(playButton);
     buttonContainer.appendChild(pauseButton);
     container.appendChild(buttonContainer);
