@@ -14,6 +14,16 @@ const manifest = defineManifest({
         '*://github.com/*',
         '*://*.github.com/*'
     ],
+    web_accessible_resources: [
+        {
+            matches: [
+                'https://github.com/*'
+            ],
+            resources: [
+                "videos/*.*",
+            ],
+        }
+    ],
     content_scripts: [
         {
             matches: [
