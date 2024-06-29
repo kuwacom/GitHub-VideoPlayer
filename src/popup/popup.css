@@ -1,0 +1,44 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #4f4444;
+    color: #ccc;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    font-size: 28px;
+    color: #4caf50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.description strong {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+.description a {
+    color: #2196f3;
+    text-decoration: none;
+}
+
+.description a:hover {
+    text-decoration: underline;
+}

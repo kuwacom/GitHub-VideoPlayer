@@ -1,0 +1,131 @@
+.playercredit {
+    height: 80%;
+    padding: 4px;
+    padding-right: 8px;
+    padding-left: 8px;
+    color: black;
+    margin-right: 50px;
+    border-radius: 2px;
+    font-weight: 500;
+}
+
+.gaming {
+    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0%
+        center/200%;
+    animation: gaming2 6s linear infinite;
+}
+@keyframes gaming2 {
+    100% {
+        background-position-x: 200%;
+    }
+}
+
+.loadVideo {
+}
+
+.github-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.github-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.github-input {
+    font-size: 14px;
+    color: white;
+    background-color: #2ea44f;
+    border: 1px solid #7a828e;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.github-input::file-selector-button {
+    font-size: 14px;
+    color: white;
+    background-color: #0a0c10;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.github-input:hover {
+    background-color: #2c974b;
+}
+
+.github-input-number {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #7a828e;
+    border-radius: 4px;
+    text-align: center;
+    width: 80px;
+    margin: 0 5px;
+}
+
+.github-select {
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #7a828e;
+    border-radius: 4px;
+    background-color: #0a0c10;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.github-select:hover {
+    background-color: #272b33;
+}
+
+.github-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    border: 1px solid #272b33;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 5px;
+    flex-grow: 1;
+}
+
+#playButton {
+    background-color: #2ea44f;
+}
+
+#playButton:hover {
+    background-color: #2c974b;
+}
+
+#pauseButton {
+    background-color: #a42e2e;
+}
+
+#pauseButton:hover {
+    background-color: #972c2c;
+}
+
+.github-button-container {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 5px;
+}
+
+/* .github-button:hover {
+    background-color: #2c974b;
+} */
+/* 
+.github-button:disabled {
+    background-color: #94d3a2;
+    cursor: not-allowed;
+} */
