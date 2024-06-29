@@ -91,6 +91,6 @@ init(()=>{ // 再生ボタンの追加
     container.appendChild(buttonContainer);
 
     graphDiv.appendChild(container);
-}, 2000);
+}, 1200);
 
 export { projectVersion }

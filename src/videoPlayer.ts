@@ -31,7 +31,7 @@ init(() => {
         video.pause();
     });
 
-}, 2050);
+}, 1500);
 
 async function startVideoProcessing(videoFilePath: string) {
     const canvas = document.createElement('canvas');
@@ -78,13 +78,15 @@ async function startVideoProcessing(videoFilePath: string) {
                 // pixels[i + 1] = avg; // Green
                 // pixels[i + 2] = avg; // Blue
 
-                const dataLevelGray = Math.floor((gray / 255) * (ContributionDataLevels.length - 1))
+                const dataLevelGray = Math.floor((gray / 256 * ContributionDataLevels.length))
                 frameDataLine.push(ContributionDataLevels[dataLevelGray])
                 if ((i / 4 + 1) % frameWidth === 0) {
                     frameData.push(frameDataLine)
                     frameDataLine = []
                 }
             }
+
+            // console.log(frameData)
 
             overwriteContributionTable(frameData)
 
@@ -109,7 +111,7 @@ async function startVideoProcessing(videoFilePath: string) {
 function overwriteContributionTable(frameData: number[][]) {
     const contributionTable = document.getElementsByClassName('ContributionCalendar-grid')[0];
     // contributionTable.classList.add('custom-table');
-    contributionTable.innerHTML = `<caption class="sr-only">Contribution Graph</caption>`
+    contributionTable.innerHTML = `<caption class="sr-only">Contribution Graph</caption>`;
 
     let monthTrHTML = '<tr style="height: 13px">';
 
@@ -117,7 +119,7 @@ function overwriteContributionTable(frameData: number[][]) {
         <td style="width: 28px">
             <span class="sr-only">Day of Week</span>
         </td>
-    `
+    `;
 
     frameData[0].forEach((pixel, index) => { // 横幅
         if (index % 4 != 0) return;
@@ -127,54 +129,54 @@ function overwriteContributionTable(frameData: number[][]) {
                 <span class="sr-only">${month.name}</span>
                 <span aria-hidden="true" style="position: absolute; top: 0">${month.name}</span>
             </td>
-        `
+        `;
     });
 
     contributionTable.innerHTML += `
         <thead>
             ${monthTrHTML}
         </thead>
-    `
+    `;
 
     let tbodyHTML = '<tbody>';
 
     frameData.forEach((line, index) => { // 縦
 
-        let rowHTML = '<tr style="height: 10px">';
+        tbodyHTML += '<tr style="height: 10px">';
 
         if ((index + 1) % 2 == 0) {
             const week = WeekList[normalizeToRange(index + 1, 7) - 1].name
-            rowHTML += `
+            tbodyHTML += `
                 <td class="ContributionCalendar-label" style="position: relative">
                     <span class="sr-only">${week}</span>
                     <span aria-hidden="true" style="clip-path: Circle(0); position: absolute; bottom: -3px">
                         ${week}
                     </span>
                 </td>
-            `
+            `;
         } else {
             const week = WeekList[normalizeToRange(index + 1, 7) - 1].name
-            rowHTML += `
+            tbodyHTML += `
                 <td class="ContributionCalendar-label" style="position: relative">
                     <span class="sr-only">${week}</span>
                     <span aria-hidden="true" style="clip-path: None; position: absolute; bottom: -3px">
                         ${week}
                     </span>
                 </td>
-            `
+            `;
         }
         
         line.forEach((pixel, index) => {
-            rowHTML += `
+            tbodyHTML += `
                 <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
-            `
+            `;
         });
-        rowHTML += '</tr>';
-        tbodyHTML += rowHTML;
+        tbodyHTML += '</tr>';
     });
 
-    tbodyHTML += '</tbody>'
-    contributionTable.innerHTML += tbodyHTML
+    tbodyHTML += '</tbody>';
+    contributionTable.innerHTML += tbodyHTML;
+    tbodyHTML = '';
 }
 
 export {}
