@@ -42,3 +42,7 @@ body {
 .description a:hover {
     text-decoration: underline;
 }
+
+.input-field {
+    width: 20px;
+}
