@@ -1,0 +1,10 @@
+# Node
+node_modules
+dist
+
+# test folder
+test
+
+# Editor directories and files
+.vscode/*
+.DS_Store
