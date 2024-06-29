@@ -108,7 +108,7 @@ init(()=>{ // 再生ボタンの追加
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => { // サイズ変更
     console.log(message)
     if (message.action == 'setWidth') {
-        const leftElement = <HTMLElement>document.getElementsByClassName('container-xl')[0];
+        const leftElement = <HTMLElement>document.querySelector('main > .container-xl');
         const rightElement = <HTMLElement>document.querySelector('div[data-hpc]');
         leftElement.style.marginLeft = message.leftWidth+'px';
         rightElement.style.width = message.rightWidth+'px';
