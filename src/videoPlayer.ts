@@ -1,5 +1,5 @@
 import { MonthList, WeekList } from "./utils/tableTitles";
-import { ColorMode, ContributionDataLevels, ContributionLikeGrayScale, init, normalizeToRange } from "./utils/utils";
+import { ContributionDataLevels, ContributionLikeGrayScale, init, normalizeToRange } from "./utils/utils";
 
 let isPause = true;
 const video = document.createElement('video');
@@ -133,7 +133,7 @@ function overwriteContributionTable(frameData: number[][] | number[][][]) {
         </td>
     `;
 
-    frameData[0].forEach((pixel, index) => { // 横幅
+    frameData[0].forEach((_pixel, index) => { // 横幅
         if (index % 4 != 0) return;
         const month = MonthList[normalizeToRange(index + 1, 12) - 1];
         monthTrHTML += `
@@ -178,7 +178,7 @@ function overwriteContributionTable(frameData: number[][] | number[][][]) {
             `;
         }
         
-        line.forEach((pixel: any, index) => {
+        line.forEach((pixel: any, _index) => {
             const colorModeSelect = <HTMLSelectElement>document.getElementById('colorModeSelect');
             if (colorModeSelect.value == 'contributionDataLevels') {
                 tbodyHTML += `
