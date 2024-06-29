@@ -8,3 +8,7 @@ test
 # Editor directories and files
 .vscode/*
 .DS_Store
+
+# Video Files
+*.mp4
+*.webm
