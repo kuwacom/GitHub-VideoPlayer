@@ -182,15 +182,15 @@ function overwriteContributionTable(frameData: number[][] | number[][][]) {
             const colorModeSelect = <HTMLSelectElement>document.getElementById('colorModeSelect');
             if (colorModeSelect.value == 'contributionDataLevels') {
                 tbodyHTML += `
-                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                    <td style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" class="ContributionCalendar-day"></td>
                 `;
             } else if (colorModeSelect.value == 'contributionLikeGrayScale') {
                 tbodyHTML += `
-                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px; background-color: ${ContributionLikeGrayScale[pixel]};" id="contribution-day-component-0-0" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                    <td style="width: 10px; background-color: ${ContributionLikeGrayScale[pixel]};" id="contribution-day-component-0-0" class="ContributionCalendar-day"></td>
                 `;
             } else if (colorModeSelect.value == 'color') {
                 tbodyHTML += `
-                    <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px; background-color: rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]});" id="contribution-day-component-0-0" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
+                    <td style="width: 10px; background-color: rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]});" class="ContributionCalendar-day"></td>
                 `;
             }
         });
