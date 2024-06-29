@@ -23,7 +23,7 @@ const manifest = defineManifest({
                 'src/index.ts',
                 'src/videoPlayer.ts'
             ],
-            run_at: 'document_end'
+            run_at: 'document_start'
         }
     ],
     action: {
@@ -42,7 +42,9 @@ export default defineConfig({
             input: {
                 popup: 'src/popup/popup.html',
             }
-        }
+        },
+        outDir: 'dist',
+        emptyOutDir: true,
     },
     //  WebSocket connection to 'ws://localhost/' failed:  というエラーの対策
     // https://github.com/crxjs/chrome-extension-tools/issues/746#issuecomment-1647484887

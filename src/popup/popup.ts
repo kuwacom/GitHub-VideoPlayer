@@ -22,5 +22,3 @@ setWidth.addEventListener('click', function() {
         }
     });
 });
-
-export {}
