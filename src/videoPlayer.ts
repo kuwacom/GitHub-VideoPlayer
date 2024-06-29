@@ -4,7 +4,7 @@ import { ContributionDataLevels, init, normalizeToRange } from "./utils/utils";
 let isPause = true;
 const video = document.createElement('video');
 
-init(()=>{
+init(() => {
     const playButton = document.getElementById('playButton')
     const pauseButton = document.getElementById('pauseButton')
 
@@ -111,37 +111,40 @@ function overwriteContributionTable(frameData: number[][]) {
     // contributionTable.classList.add('custom-table');
     contributionTable.innerHTML = `<caption class="sr-only">Contribution Graph</caption>`
 
-    const monthTr = document.createElement('tr');
-    monthTr.style.height = '13px'
-    monthTr.innerHTML = `
+    let monthTrHTML = '<tr style="height: 13px">';
+
+    monthTrHTML += `
         <td style="width: 28px">
             <span class="sr-only">Day of Week</span>
         </td>
     `
-    const thead = document.createElement('thead');
-    thead.appendChild(monthTr);
 
     frameData[0].forEach((pixel, index) => { // 横幅
         if (index % 4 != 0) return;
         const month = MonthList[normalizeToRange(index + 1, 12) - 1];
-        monthTr.innerHTML += `
+        monthTrHTML += `
             <td class="ContributionCalendar-label" colspan="${month.colspan}" style="position: relative">
                 <span class="sr-only">${month.name}</span>
                 <span aria-hidden="true" style="position: absolute; top: 0">${month.name}</span>
             </td>
         `
     });
-    contributionTable.appendChild(thead)
 
-    const tbody = document.createElement('tbody');
+    contributionTable.innerHTML += `
+        <thead>
+            ${monthTrHTML}
+        </thead>
+    `
+
+    let tbodyHTML = '<tbody>';
+
     frameData.forEach((line, index) => { // 縦
-        const row = document.createElement('tr');
-        row.style.height = '10px'
-        tbody.appendChild(row);
+
+        let rowHTML = '<tr style="height: 10px">';
 
         if ((index + 1) % 2 == 0) {
             const week = WeekList[normalizeToRange(index + 1, 7) - 1].name
-            row.innerHTML = `
+            rowHTML += `
                 <td class="ContributionCalendar-label" style="position: relative">
                     <span class="sr-only">${week}</span>
                     <span aria-hidden="true" style="clip-path: Circle(0); position: absolute; bottom: -3px">
@@ -151,7 +154,7 @@ function overwriteContributionTable(frameData: number[][]) {
             `
         } else {
             const week = WeekList[normalizeToRange(index + 1, 7) - 1].name
-            row.innerHTML = `
+            rowHTML += `
                 <td class="ContributionCalendar-label" style="position: relative">
                     <span class="sr-only">${week}</span>
                     <span aria-hidden="true" style="clip-path: None; position: absolute; bottom: -3px">
@@ -160,14 +163,18 @@ function overwriteContributionTable(frameData: number[][]) {
                 </td>
             `
         }
-
+        
         line.forEach((pixel, index) => {
-            row.innerHTML += `
+            rowHTML += `
                 <td tabindex="0" data-ix="0" aria-selected="false" aria-describedby="contribution-graph-legend-level-0" style="width: 10px" id="contribution-day-component-0-0" data-level="${ContributionDataLevels[pixel]}" role="gridcell" data-view-component="true" class="ContributionCalendar-day"></td>
             `
         });
+        rowHTML += '</tr>';
+        tbodyHTML += rowHTML;
     });
-    contributionTable.appendChild(tbody)
+
+    tbodyHTML += '</tbody>'
+    contributionTable.innerHTML += tbodyHTML
 }
 
 export {}
