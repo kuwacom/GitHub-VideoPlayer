@@ -5,7 +5,7 @@ const manifest = defineManifest({
     manifest_version: 3,
     name: 'GitHub-VideoPlayer',
     description: 'GitHubのコントリビューション履歴のテーブルで動画を再生するプログラムです',
-    version: '1.0.0',
+    version: '1.1.0',
     permissions: [
         'storage',
         'activeTab',

@@ -1,4 +1,4 @@
-export const projectVersion = "1.0.0";
+export const projectVersion = "1.1.0";
 
 export const ContributionDataLevels = [ 0, 1, 2, 3, 4 ]
 
